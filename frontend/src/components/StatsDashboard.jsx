@@ -5,7 +5,6 @@ const StatsDashboard = ({ workouts }) => {
   const totalMinutes = workouts.reduce((sum, w) => sum + w.duration, 0);
 
   const workoutsThisWeek = workouts.filter(w => {
-    // Get local date string for the start of the current week (Sunday)
     const now = new Date();
     const sunday = new Date(now);
     sunday.setDate(now.getDate() - now.getDay());
@@ -26,7 +25,6 @@ const StatsDashboard = ({ workouts }) => {
   const calculateStreak = () => {
     if (workouts.length === 0) return 0;
     
-    // Get unique local date strings, sorted descending
     const dates = [...new Set(workouts.map(w => w.workout_date))].sort((a, b) => b.localeCompare(a));
     
     const now = new Date();
@@ -35,18 +33,13 @@ const StatsDashboard = ({ workouts }) => {
     yesterday.setDate(yesterday.getDate() - 1);
     const yesterdayStr = new Date(yesterday.getTime() - (yesterday.getTimezoneOffset() * 60000)).toISOString().slice(0, 10);
 
-    // Find the starting point: either today, yesterday, or if we have future dates, the first one <= today
     let startIndex = dates.findIndex(d => d <= todayStr);
     
     if (startIndex === -1) {
-        // All workouts are in the future? Check if the earliest one is today or yesterday
-        // Actually, if we have workouts in the future, we might want to count them towards the streak if they connect to today.
-        // Let's just catch the case where the most recent "real" workout was today or yesterday.
-        if (dates[dates.length - 1] > todayStr) return 0; // Everything in the future
+        if (dates[dates.length - 1] > todayStr) return 0; 
         startIndex = 0;
     }
 
-    // Check if the streak is "alive" (workouts today or yesterday)
     const mostRecent = dates[0];
     if (mostRecent < yesterdayStr) return 0;
 
@@ -58,10 +51,8 @@ const StatsDashboard = ({ workouts }) => {
             streak++;
             currentCheckDate.setDate(currentCheckDate.getDate() - 1);
         } else if (dates[i] < currentCheckDate.toISOString().slice(0, 10)) {
-            // Gap found
             break;
         }
-        // If dates[i] > currentCheckDate, it's a future date relative to where we are, just skip/continue
     }
     
     return streak;

@@ -47,7 +47,7 @@ const getChatResponse = async ({ message, history = [] }) => {
     return result.response.text().trim();
   } catch (error) {
     console.error('[AI Service Error]:', error.message);
-    return "The AI Coach is currently recalibrating its training models. If this persists, please double-check your GEMINI_API_KEY in the backend/.env file!";
+    return "The AI Coach is momentarily offline for maintenance. Please try again in a few minutes.";
   }
 };
 
