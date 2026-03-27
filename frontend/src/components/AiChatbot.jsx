@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { sendChat } from '../api/ai';
-import { MessageCircle, X, Send, Zap, Heart, ShieldAlert } from 'lucide-react';
+import { MessageCircle, X, Send, Zap, Heart, ShieldAlert, Loader2 } from 'lucide-react';
 
 const TONES = [
   { key: 'friendly',     label: 'Friendly',     icon: <Heart size={12} />,      color: 'text-pink-400' },

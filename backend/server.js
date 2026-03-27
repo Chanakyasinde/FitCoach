@@ -1,20 +1,28 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
-const app = express();
-const PORT = process.env.PORT || 3000;
+const workoutRoutes = require('./src/routes/workouts');
+const aiRoutes = require('./src/routes/ai');
 
-app.use(cors());
+const app = express();
+const PORT = process.env.PORT || 3001;
+
+// Middleware
+app.use(cors({
+  origin: process.env.CORS_ORIGIN || 'http://localhost:5173',
+  credentials: true
+}));
 app.use(express.json());
 
-app.get('/api/health', (req, res) => {
-  res.send('Server is running...');
-});
+// Routes
+app.use('/api/workouts', workoutRoutes);
+app.use('/api/ai', aiRoutes);
 
-app.get('/api/data', (req, res) => {
-  res.json({ message: "Hello from the backend!" });
+// Health Check
+app.get('/api/health', (req, res) => {
+  res.json({ status: 'FitCoach API is active', timestamp: new Date() });
 });
 
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(`🏋️ FitCoach API running on http://localhost:${PORT}`);
 });
