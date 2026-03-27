@@ -11,8 +11,8 @@ const initializeAI = () => {
 
   try {
     const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
-    model = genAI.getGenerativeModel({ model: "gemini-3-flash-preview" });
-    console.log('[AI Service]: Successfully connected to Gemini 3 Flash Preview.');
+    model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+    console.log('[AI Service]: Successfully connected to Gemini 2.5 Flash.');
   } catch (error) {
     console.error('[AI Service]: Connection failed:', error.message);
   }
@@ -46,8 +46,8 @@ const getChatResponse = async ({ message, history = [] }) => {
     const result = await model.generateContent(message);
     return result.response.text().trim();
   } catch (error) {
-    console.warn('[AI Service]: Using defensive fallback for chat.');
-    return "I'm currently recalibrating your training data. Keep focusing on your form, and I'll be back in a second!";
+    console.error('[AI Service Error]:', error.message);
+    return "The AI Coach is currently recalibrating its training models. If this persists, please double-check your GEMINI_API_KEY in the backend/.env file!";
   }
 };
 
